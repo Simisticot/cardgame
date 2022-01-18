@@ -3,7 +3,14 @@ let drawnCard = document.getElementById("drawnCard");
 let royalRoadButton = document.getElementById("royalRoad");
 let drawButton = document.getElementById("draw");
 let royalRoadEffectTag = document.getElementById("royalRoadEffect");
+let spreadContentTag = document.getElementById("spreadContent");
+let spreadButton = document.getElementById("spread");
+const cooldownDraw = 3;
 const cards = [
+    {
+        name:"",
+        royalRoad:3
+    },
     {
         name:"balance",
         royalRoad:0
@@ -29,42 +36,57 @@ const cards = [
         royalRoad:2
     }
 ]
-const royalRoadText = ["Power", "AoE", "Duration"]
+const royalRoadText = ["Power", "AoE", "Duration", ""]
 let drawInterval = 0;
 let drawn = 0;
+let spreadContent = 0;
 
 drawButton.addEventListener("click", draw);
 royalRoadButton.addEventListener("click", royalRoad);
+spreadButton.addEventListener("click", spread);
 
 function spread(){
-    if(drawn === 0) return;
-    spreadContent = drawn;
-    updateSpread();
-    drawn = 0;
-    updateDrawn();
+    if(spreadContent === 0){
+        if(drawn === 0) return;
+        updateSpread(drawn);
+        updateDrawn(0);
+        startDrawCD();
+    }else{
+        updateSpread(0);
+        updateRoyalRoad(3);
+    }
 }
 
-function updateSpread(){
-    if(spread === 0){
-        spreadTag.innerHTML = "";
-    }else{
-        spreadTag.innerHTML = cards[spread-1].name;
-    }
+function updateSpread(value){
+    spreadContent = value;
+    spreadContentTag.innerHTML = cards[spreadContent].name;
 }
 
 function royalRoad(){
     if(drawn === 0) return;
-    royalRoadEffect = cards[drawn-1].royalRoad;
+    updateRoyalRoad(cards[drawn].royalRoad);
+    updateDrawn(0);
+    startDrawCD();
+}
+
+function updateRoyalRoad(value){
+    royalRoadEffect = value;
     royalRoadEffectTag.innerHTML = royalRoadText[royalRoadEffect];
-    drawn = 0;
-    updateDrawn();
 }
 
 function draw(){
-    if(drawInterval != 0) return;
-    drawn = Math.floor(Math.random()*6)+1;
-    updateDrawn();
-    drawCD.innerHTML = "5";
+    if(drawn === 0){
+        if(drawInterval != 0) return;
+        updateDrawn(Math.floor(Math.random()*6)+1);
+    }else{
+        updateDrawn(0);
+        updateRoyalRoad(3);
+        startDrawCD()
+    }
+}
+
+function startDrawCD(){
+    drawCD.innerHTML = cooldownDraw;
     drawInterval = setInterval(updateDrawCD, 1000);
     function updateDrawCD(){
         drawCD.innerHTML = Number(drawCD.innerHTML)-1;
@@ -76,10 +98,7 @@ function draw(){
     }
 }
 
-function updateDrawn(){
-    if(drawn == 0){
-        drawnCard.innerHTML = "";
-    }else{
-        drawnCard.innerHTML = cards[drawn-1].name;
-    }
+function updateDrawn(value){
+    drawn = value;
+    drawnCard.innerHTML = cards[drawn].name;
 }
