@@ -36,6 +36,22 @@ var drawn = 0;
 drawButton.addEventListener("click", draw);
 royalRoadButton.addEventListener("click", royalRoad);
 
+function spread(){
+    if(drawn == 0) return;
+    spreadContent = drawn;
+    updateSpread();
+    drawn = 0;
+    updateDrawn();
+}
+
+function updateSpread(){
+    if(spread == 0){
+        spreadTag.innerHTML = "";
+    }else{
+        spreadTag.innerHTML = cards[spread-1].name;
+    }
+}
+
 function royalRoad(){
     if(drawn == 0) return;
     royalRoadEffect = cards[drawn-1].royalRoad;
