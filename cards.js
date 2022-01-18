@@ -1,8 +1,8 @@
-var drawButton = document.getElementById("draw");
-var drawCD = document.getElementById("drawCd");
-var drawnCard = document.getElementById("drawnCard");
-var royalRoadButton = document.getElementById("royalRoad");
-var royalRoadEffectTag = document.getElementById("royalRoadEffect");
+let drawCD = document.getElementById("drawCd");
+let drawnCard = document.getElementById("drawnCard");
+let royalRoadButton = document.getElementById("royalRoad");
+let drawButton = document.getElementById("draw");
+let royalRoadEffectTag = document.getElementById("royalRoadEffect");
 const cards = [
     {
         name:"balance",
@@ -30,14 +30,14 @@ const cards = [
     }
 ]
 const royalRoadText = ["Power", "AoE", "Duration"]
-var drawInterval = 0;
-var drawn = 0;
+let drawInterval = 0;
+let drawn = 0;
 
 drawButton.addEventListener("click", draw);
 royalRoadButton.addEventListener("click", royalRoad);
 
 function spread(){
-    if(drawn == 0) return;
+    if(drawn === 0) return;
     spreadContent = drawn;
     updateSpread();
     drawn = 0;
@@ -45,7 +45,7 @@ function spread(){
 }
 
 function updateSpread(){
-    if(spread == 0){
+    if(spread === 0){
         spreadTag.innerHTML = "";
     }else{
         spreadTag.innerHTML = cards[spread-1].name;
@@ -53,7 +53,7 @@ function updateSpread(){
 }
 
 function royalRoad(){
-    if(drawn == 0) return;
+    if(drawn === 0) return;
     royalRoadEffect = cards[drawn-1].royalRoad;
     royalRoadEffectTag.innerHTML = royalRoadText[royalRoadEffect];
     drawn = 0;
@@ -61,7 +61,7 @@ function royalRoad(){
 }
 
 function draw(){
-    if(!drawInterval == 0) return;
+    if(drawInterval != 0) return;
     drawn = Math.floor(Math.random()*6)+1;
     updateDrawn();
     drawCD.innerHTML = "5";
