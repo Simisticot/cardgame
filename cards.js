@@ -10,6 +10,23 @@ const sleeveDrawButton = document.getElementById("sleeveDraw");
 const players = document.querySelectorAll(".player");
 const cooldownSleeveDraw = 3;
 const cooldownDraw = 3;
+const players = [
+    {
+        name:"Aquila",
+        job: 0,
+        balance: false,
+        spear: false,
+        arrow: false
+    }
+]
+const jobs = [
+    {
+        name:"DRG",
+        dps: 6000,
+        critScaling: 1,
+        speedScaling: 1
+    }
+]
 const cards = [
     {
         name:"",
@@ -153,5 +170,17 @@ function updateDamage(){
         let dps = Number(players[i].querySelector(".dps").innerHTML);
         let damage = Number(players[i].querySelector(".damage").innerHTML);
         players[i].querySelector(".damage").innerHTML = damage+dps;
+    }
+}
+
+function updateDPS(){
+
+}
+
+function buff(card, player){
+    switch(card){
+        case 0:
+            players[0].balance = true;
+            
     }
 }
