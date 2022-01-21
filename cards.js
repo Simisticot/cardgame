@@ -7,7 +7,7 @@ const spreadContentTag = document.getElementById("spreadContent");
 const spreadButton = document.getElementById("spread");
 const sleeveDrawCD = document.getElementById("sleeveDrawCD");
 const sleeveDrawButton = document.getElementById("sleeveDraw");
-const players = document.querySelectorAll(".player");
+const playerTags = document.querySelectorAll(".player");
 const cooldownSleeveDraw = 3;
 const cooldownDraw = 3;
 const players = [
@@ -24,7 +24,10 @@ const jobs = [
         name:"DRG",
         dps: 6000,
         critScaling: 1,
-        speedScaling: 1
+        speedScaling: 1,
+        timeoutBalance: 0,
+        timeoutSpear: 0,
+        timeoutArrow: 0
     }
 ]
 const cards = [
@@ -70,6 +73,10 @@ royalRoadButton.addEventListener("click", royalRoad);
 spreadButton.addEventListener("click", spread);
 sleeveDrawButton.addEventListener("click", sleeveDraw);
 
+for(let i = 0; i < playerTags.length; i++){
+    playerTags[i].querySelector(".play").addEventListener("click", function(){buff(drawn, i)});
+}
+
 function spread(){
     if(spreadContent === 0){
         if(drawn === 0) return;
@@ -106,7 +113,7 @@ function draw(){
     }else{
         updateDrawn(0);
         updateRoyalRoad(0);
-        startDrawCD()
+        startDrawCD();
     }
 }
 
@@ -166,21 +173,47 @@ function endDrawCD(){
 }
 
 function updateDamage(){
-    for(let i = 0; i < players.length; i++){
-        let dps = Number(players[i].querySelector(".dps").innerHTML);
-        let damage = Number(players[i].querySelector(".damage").innerHTML);
-        players[i].querySelector(".damage").innerHTML = damage+dps;
+    for(let i = 0; i < playerTags.length; i++){
+        let dps = Number(playerTags[i].querySelector(".dps").innerHTML);
+        let damage = Number(playerTags[i].querySelector(".damage").innerHTML);
+        playerTags[i].querySelector(".damage").innerHTML = damage+dps;
     }
-}
-
-function updateDPS(){
-
 }
 
 function buff(card, player){
     switch(card){
-        case 0:
-            players[0].balance = true;
-            
+        case 1:
+            players[player].balance = true;
+            players[player].timeoutBalance = setTimeout(endBuff, 10000, 1, player);
+            break;
+        case 5:
+            players[player].spear = true;
+            players[player].timeoutSpear = setTimeout(endBuff, 10000, 5, player);
+            break;
+        case 6:
+            players[player].arrow = true;
+            players[player].timeoutArrow = setTimeout(endBuff, 10000, 6, player);
+            break;
+        default:
+            return
+    }
+}
+
+function endBuff(card, player){
+    switch(card){
+        case 1:
+            players[player].balance = false;
+            players[player].timeoutBalance = 0;
+            break;
+        case 5:
+            players[player].spear = false;
+            players[player].timeoutSpear = 0;
+            break;
+        case 6:
+            players[player].arrow = false;
+            players[player].timeoutArrow = 0;
+            break;
+        default:
+            return
     }
 }
