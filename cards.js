@@ -7,6 +7,7 @@ const spreadContentTag = document.getElementById("spreadContent");
 const spreadButton = document.getElementById("spread");
 const sleeveDrawCD = document.getElementById("sleeveDrawCD");
 const sleeveDrawButton = document.getElementById("sleeveDraw");
+const players = document.querySelectorAll(".player");
 const cooldownSleeveDraw = 3;
 const cooldownDraw = 3;
 const cards = [
@@ -45,6 +46,7 @@ let drawn = 0;
 let sleeveDrawInterval = 0;
 let spreadContent = 0;
 let royalRoadEffect = 0;
+let damage_interval = setInterval(updateDamage, 1000);
 
 drawButton.addEventListener("click", draw);
 royalRoadButton.addEventListener("click", royalRoad);
@@ -144,4 +146,12 @@ function endDrawCD(){
     clearInterval(drawInterval);
     drawInterval = 0;
     drawCD.innerHTML = "";
+}
+
+function updateDamage(){
+    for(let i = 0; i < players.length; i++){
+        let dps = Number(players[i].querySelector(".dps").innerHTML);
+        let damage = Number(players[i].querySelector(".damage").innerHTML);
+        players[i].querySelector(".damage").innerHTML = damage+dps;
+    }
 }
